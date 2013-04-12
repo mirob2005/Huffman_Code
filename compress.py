@@ -7,31 +7,38 @@
 import os
 import sys
 from include.Priority_Queue import PriorityQueue
+from include.Node import Node
 
 def compress(inFile,outFile):
     infp = open(inFile,'r')
     text = infp.read()
     outfp = open(outFile,'w')
     
-    count = {}
+    nodes = []
     
-    output = ''
     for char in text:
-        if char in count:
-            count[char] += 1
-        else:
-            count[char] = 1
+        found = False
+        for node in nodes:
+            if node.key == char:
+                node.value += 1
+                found = True
+        if not found:
+            nodes.append(Node(1,char))
+
+    for node in nodes:
+        print('Node %s has value %s and code %s'%(node.key,node.value,node.code))
             
     q = PriorityQueue()
-    total = 0
-    for key, value in count.items():
-        q.enQueue(value,key)
+    for node in nodes:
+        q.enQueue(node)
     
-    
-    minV = q.deQueue()
-    while minV:
-        print('Min = %s'%minV)
-        minV = q.deQueue()
+    min1 = q.deQueue()
+    min2 = q.deQueue()
+    while min2:
+        q.enQueue(min1+min2)
+        min1 = q.deQueue()
+        min2 = q.deQueue()
+    print(min1)
 
     #groupings = []    
     #while output:
