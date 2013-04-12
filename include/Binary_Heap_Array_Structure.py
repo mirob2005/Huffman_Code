@@ -2,6 +2,10 @@
 #mirob2005@gmail.com
 #Completed: 2/25/2013
 
+#Modified: 4/11/2013 for Huffman Code
+#Has a value and an associated key, heap based off the value
+#Is now a Min-heap
+
 # Binary Heap implemented using an array instead of a binary tree data structure
 # Children are at a[2i+1] and a[2i+2]
 # Parent is at a[floor((i-1)/2)]
@@ -18,28 +22,21 @@ class BinaryHeap:
         string = ""
         index = 0
         size = len(self.nodes)
-        for node in self.nodes:
+        for value,key in self.nodes:
             parent = self.getParent(index)
             leftChild = self.getLeftChild(index)
             rightChild = self.getRightChild(index)
-            string += ("\n%s - (%s|%s, %s)"% (node,parent,leftChild,rightChild))
+            string += ("\n%s(%s) - (%s|%s, %s)"% (value,key,parent,leftChild,rightChild))
             index += 1
         return string if not self.isEmpty() else "(Empty)"
     
     def returnBFS(self):
         return self.nodes
     
-    def insert(self,key):
-        self.nodes.append(key)
+    def insert(self,value,key):
+        self.nodes.append([value,key])
         self.heapifyUp()
         return True
-    
-    def insertList(self, alist):
-        boolResult = True
-        for item in alist:
-            if(self.insert(item) == False):
-                boolResult = False
-        return boolResult
     
     def delete(self):
         if self.isEmpty():
@@ -56,7 +53,7 @@ class BinaryHeap:
     def heapifyUp(self):
         child = len(self.nodes)-1
         parent = self.getParentIndex(child)
-        while(self.nodes[child] > self.nodes[parent]):
+        while(self.nodes[child] < self.nodes[parent]):
             temp = self.nodes[child]
             self.nodes[child] = self.nodes[parent]
             self.nodes[parent] = temp
@@ -66,8 +63,8 @@ class BinaryHeap:
     def heapifyDown(self,parent,left,right):
         if not self.validChild(left) and not self.validChild(right):
             return
-        if not self.validChild(right) or self.nodes[left] > self.nodes[right]:
-            if(self.nodes[left] > self.nodes[parent]):
+        if not self.validChild(right) or self.nodes[left] < self.nodes[right]:
+            if(self.nodes[left] < self.nodes[parent]):
                 temp = self.nodes[parent]
                 self.nodes[parent] = self.nodes[left]
                 self.nodes[left] = temp
@@ -75,7 +72,7 @@ class BinaryHeap:
             else:
                 return
         else:
-            if(self.nodes[right] > self.nodes[parent]):
+            if(self.nodes[right] < self.nodes[parent]):
                 temp = self.nodes[parent]
                 self.nodes[parent] = self.nodes[right]
                 self.nodes[right] = temp
@@ -112,19 +109,19 @@ class BinaryHeap:
     
     def copyHeap(self):
         copy  = BinaryHeap()
-        copy.insertList(self.returnBFS())
+        for value,key in self.nodes:
+            copy.insert(value,key)
         return copy
-    
-    def merge(self, heap):
-        heapData = heap.returnBFS()
-        self.insertList(heapData)
     
 if __name__ == '__main__':
     
     bh = BinaryHeap()
     
-    for data in range(0,6):
-        bh.insert(data)
+    bh.insert(1, 'a')
+    bh.insert(2,'b')
+    bh.insert(3,'c')
+    bh.insert(4,'d')
+    bh.insert(3,'e')
         
     print(bh)
     
