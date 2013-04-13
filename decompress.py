@@ -8,22 +8,26 @@
 import os
 import sys
 from include.Priority_Queue import PriorityQueue
-
+from include.Node import Node
 
 def decompress(inFile,outFile):
-    infp = open(inFile,'r')
+    infp = open(inFile,'rb')
     text = infp.read()
-    groupings = []
+    outfp = open(outFile,'w')
+    
+    hexGrp = []
     for char in text:
-        groupings.append(ord(char))
+        hexGrp.append(bin(char)[2:])
     
     code = ''
-    outfp = open(outFile,'w')
-    for group in groupings:
-        code += bin(group)[2:]
-    for char in code:
-        if char == '1':
-            outfp.write('a')
+    for group in hexGrp[:-1]:
+        while len(group) != 8:
+            group = '0'+group
+        code += group
+    code += hexGrp[-1]
+
+    print(code)    
+
     infp.close()
     outfp.close()
 
