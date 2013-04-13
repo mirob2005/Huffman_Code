@@ -21,6 +21,10 @@ def compress(inFile,outFile):
             nodes[char].value += 1
         else:
             nodes[char] = Node(1,char)
+            
+    #Add in psuedo-EOF marker symbol
+    EOF = chr(255)+chr(255)
+    nodes[EOF] = Node(1,EOF)
 
     #for node in nodes.values():
         #print('Node %s has value %s and code %s'%(node.key,node.value,node.code))
@@ -35,22 +39,31 @@ def compress(inFile,outFile):
         q.enQueue(min1+min2)
         min1 = q.deQueue()
         min2 = q.deQueue()
-   
+    
     root = min1
-
+    #print(root)
+    
     output = ''
     for char in text:
         if char in nodes:
             output += nodes[char].code
         else:
             print('Char object not found!')
-
-    bitLength = len(output)
+            
+    #Add psuedo-EOF marker
+    output+= nodes[EOF].code
+            
+    #Build Header to store huffman tree
+    header = traverseTree(root) + '1111111111111111'
+    
+    #Prepend header to output
+    output = header + output
+    
     hexGrp = []    
     while output:
         hexGrp.append(output[:8])
         output = output[8:]
-        
+
     output = bytes([int(group,2) for group in hexGrp])
     
     size = outfp.write(output)
@@ -58,6 +71,25 @@ def compress(inFile,outFile):
     outfp.close()
     
     return size
+
+def traverseTree(root):
+    code = ''
+    if not root:
+        return code
+    if root.left or root.right:
+        code += '0'
+    else:
+        code += '1'
+        #If psuedo-EOF marker
+        if len(root.key)==2:
+            code += '1111111111111111'
+        else:
+            ASCII = bin(ord(root.key))[2:]
+            while len(ASCII) != 8:
+                ASCII = '0'+ASCII
+            code += ASCII
+    return code + traverseTree(root.left)+traverseTree(root.right)
+    
 
 if __name__ == '__main__':
     if len(sys.argv) != 3:
