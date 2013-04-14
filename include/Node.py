@@ -5,7 +5,7 @@
 # Used in compress.py
 
 class Node:
-    def __init__(self, value, key, code=None, left=None, right=None):
+    def __init__(self, value=None, key=None, code=None, left=None, right=None):
         self.value = value
         self.key = key
         self.code = code

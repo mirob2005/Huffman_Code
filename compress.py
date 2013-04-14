@@ -59,6 +59,9 @@ def compress(inFile,outFile):
     #Prepend header to output
     output = header + output
     
+    while len(output)%8 != 0:
+        output +='0'
+    
     hexGrp = []    
     while output:
         hexGrp.append(output[:8])
