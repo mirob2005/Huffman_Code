@@ -26,6 +26,17 @@ Implementing the huffman code compression algorithm in Python.
 - 16 extra bits to signify end of the header portion of the compressed file.
 - Extra bits for the EOF symbol (17 extra bits: 1 node, 16 ASCII rep. + the Huffman code to represent the symbol)
 
+## Huffman Tree:
+- The tree is constructed by counting up the frequencies of each character present in the file to be compressed.
+- Then the tree is constructed from the leaves up.
+- Each symbol is a leaf node so that no prefixes can exist. This prevents confusion based off parsing the code and being able to decode different symbols from it.
+- With the use of a priority queue built upon a binary heap (code in the include directory) the 2 least-frequent nodes are combined to form a new internal node combining the frequencies of the 2 nodes taken to form it.
+- This combined node is reinserted into the queue and the next 2 least-frequent nodes are taken and combined.
+- This repeats until we have a single node, which will be the root of our tree.
+- The code for each symbol (leaf node) is formed by traversing down the tree to each leaf. If a given node is a left-child it gets a '0' and a '1' for a right-child. So the length of the code for each symbol will depend on the level of the tree the symbol is present.
+- More frequent symbols will be higher in the tree and therefore have a shorter code to represent it.
+- The length of the code also depends on the number of unique symbols found in the text to be compressed.
+
 ## Results:
 
 <table>
