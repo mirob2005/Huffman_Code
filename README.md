@@ -68,8 +68,13 @@ Implementing the huffman code compression algorithm in Python.
   
 </table>
 
-### Explaination of Result:
+### Explanation of Results:
 - Test 1 has mostly unique characters with some repeats so the necessary overhead makes the compressed file larger.
 - Test 4 has one of each printable ASCII character so there is little possibility for compression.
 - Test 2 is a sentence repeated mulitple times allowing for compression.
 - Test 3 and 5 include assorted characters resembling more natural written text.
+
+## Possible Improvements:
+- Use of multiple symbol patterns that occur frequently
+- Use of different patterns for different portions of the file
+- Error Correction
