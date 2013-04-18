@@ -77,13 +77,19 @@ Implementing the huffman code compression algorithm in Python.
 
   </tr>
   
+  <tr>
+
+    <td>Shakespeare</td><td>8250 bytes</td><td>4709 bytes</td><td>-42.92%</td>
+
+  </tr>
+  
 </table>
 
 ### Explanation of Results:
 - Test 1 has mostly unique characters with some repeats so the necessary overhead makes the compressed file larger.
 - Test 4 has one of each printable ASCII character so there is little possibility for compression.
 - Test 2 is a sentence repeated mulitple times allowing for compression.
-- Test 3 and 5 include assorted characters resembling more natural written text.
+- Test 3,5 and shakespeare include assorted characters resembling more natural written text.
 
 ## Possible Improvements:
 - Use of multiple symbol patterns that occur frequently

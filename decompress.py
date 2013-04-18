@@ -1,6 +1,6 @@
 #Michael Robertson
 #mirob2005@gmail.com
-#Completed: 4/--/2013
+#Completed: 4/14/2013
 
 #Decompresses a test file compressed by compress.py using Huffman coding
 #   algorithm.
